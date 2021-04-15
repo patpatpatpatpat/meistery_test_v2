@@ -1,0 +1,123 @@
+=== PUBLIC ===
+POST /api/v1/login
+payload: {
+    "email": "briggs@meistery.net",
+    "password": "password"
+}
+response: {
+  "token": "0f4b4fb0434a156f9fc9f4229bf0592b871612c1828d13d78c09399f73b67ede",
+  "user_id": 1
+}
+=== /PUBLIC ===
+=== AUTHORIZED ===
+--- GET ---
+GET /api/v1/logout
+response: any
+GET /api/v1/users/${id}
+response: {
+  "id": 1,
+  "username": "briggs@meistery.net",
+  "first_name": "Briggs",
+  "last_name": "Victoriads",
+  "email": "briggs@meistery.net",
+  "gender": "male",
+  "age": 6,
+  "country": 1,
+  "city": 1
+}
+GET /api/v1/country_data
+response: [
+  {
+    "id": 1,
+    "name": "Russia",
+    "cities": [
+      {
+        "id": 1,
+        "name": "Novosibirsk"
+      },
+      {
+        "id": 2,
+        "name": "Nizhny Novgorod"
+      },
+      {
+        "id": 3,
+        "name": "Samara"
+      },
+      {
+        "id": 4,
+        "name": "Omsk"
+      },
+      {
+        "id": 5,
+        "name": "Kazan"
+      },
+      {
+        "id": 6,
+        "name": "Ufa"
+      },
+      {
+        "id": 7,
+        "name": "Chelyabinsk"
+      }
+    ]
+  }
+]
+GET /api/v1/sale_statistics
+response: {
+  "average_sales_for_current_user": 0.675,
+  "average_sale_all_user": 7.5377777777777775,
+  "highest_revenue_sale_for_current_user": {
+    "sale_id": 80,
+    "revenue": 1.25
+  },
+  "product_highest_revenue_for_current_user": {
+    "product_name": "Tape dispenser",
+    "price": 20
+  },
+  "product_highest_sales_number_for_current_user": {
+    "product_name": "Tape dispenser",
+    "price": 432
+  }
+}
+GET /api/v1/sales
+response: [
+  {
+    "id": 440,
+    "product": "Bulldog clip",
+    "revenue": "0.10",
+    "sales_number": 5,
+    "date": "2010-02-02",
+    "user_id": 1
+  },
+]
+--- /GET ---
+--- PATCH ---
+PATCH /api/v1/users/1
+payload: {
+  "email": "briggs@meistery.net",
+  "first_name": "Briggs",
+  "last_name": "Victoriads",
+  "gender": "male",
+  "age": 6,
+  "country": 1,
+  "city": 1
+}
+response: status should be 200
+--- /PATCH ---
+--- POST ---
+POST /api/v1/sales
+payload: {
+  "sales_data": [
+    {
+      "id": 1,
+      "date": "2010-2-2",
+      "product": "Bulldog clip",
+      "sales_number": "5",
+      "revenue": "0.1",
+      "user_id": "1"
+    },
+  ]
+}
+response: status should be 200 or 201
+--- POST ---
+=== /AUTHORIZED ===
