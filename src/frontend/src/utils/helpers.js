@@ -5,17 +5,20 @@ import { isBefore } from "date-fns";
  * @param {array} salesData
  */
 export const preProcessData = (salesData) => {
+  console.log("preProcessData salesData", salesData);
   const processedData = [];
+  const d = new Date();
+  const created = d.toISOString();
   salesData.forEach((row, index) => {
     // Checking if the current row is empty or not. If the row is empty we are ignoring that row.
     if (row[0]) {
       processedData.push({
-        id: index,
+        id: index + 1,
         date: row[0],
         product: row[1],
         sales_number: row[2],
         revenue: row[3],
-        userId: row[4],
+        user_id: row[4],
       });
     }
   });

@@ -23,7 +23,7 @@ export const cities = {
 	],
 }
 
-export const genders = ['Male', 'Female', 'Unspecified']
+export const genders = ['male', 'female']
 
 export const chartFilters = ['sales_number', 'revenue']; 
 

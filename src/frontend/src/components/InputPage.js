@@ -9,7 +9,6 @@ import Grid from "@material-ui/core/Grid";
 import useStyles from "../layout/Style";
 import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { logout } from "../utils/mockApiHelper";
 import {
   preProcessData,
   sortSaleData,
@@ -27,18 +26,38 @@ import Dialog from "./Dialog";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { isValid } from "date-fns";
+import { updateUserService } from "../services/user.service";
+import { createSalesRecordService } from "../services/sales.service";
+import { DashboardContext } from "../pages/Dashboard";
+import { MainContext } from "../components/Main";
 
-const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
+const InputPage = ({
+  setShowoutput,
+  setcsvData,
+  userInformation,
+  setUserInformation,
+  countryList,
+}) => {
+  const dashboardContext = React.useContext(DashboardContext);
+  const mainContext = React.useContext(MainContext);
+  const { logoutProcess } = dashboardContext;
+  const {
+    name,
+    setName,
+    email,
+    setEmail,
+    age,
+    setAge,
+    gender,
+    setGender,
+    city,
+    setCity,
+    country,
+    setCountry,
+  } = mainContext;
   const classes = useStyles();
-  const [name, setName] = useState();
-  const [email, setEmail] = useState("");
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("");
-  const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
   const [file, setFile] = useState();
   const [rawData, setRawData] = useState();
-  const [cityList, setCityList] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [hasUpdatedUserInformation, setHasUpdatedUserInformation] = useState(
@@ -46,19 +65,34 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
   );
 
   useEffect(() => {
-    const userInformation = getCurrentUserInformation();
-    if (userInformation?.name) {
-      setName(userInformation.name);
+    const userInformationIsNotBlankObject =
+      Object.keys(userInformation).length > 0 &&
+      userInformation.constructor === Object;
+    if (userInformationIsNotBlankObject) {
+      setName(`${userInformation.first_name} ${userInformation.last_name}`);
       setAge(userInformation.age);
       setEmail(userInformation.email);
       setGender(userInformation.gender);
-      setCountry(userInformation.country);
-      setCity(userInformation.city);
-      setCityList(cities[userInformation.country]);
     }
-  }, []);
+  }, [setName, setAge, setEmail, setGender, userInformation]);
 
-  const btnEnabeled =
+  useEffect(() => {
+    if (userInformation.country && countryList.length > 0)
+      setCountry(
+        countryList.filter(
+          (country) => country.id === userInformation.country
+        )[0]
+      );
+  }, [setCountry, userInformation, countryList]);
+
+  useEffect(() => {
+    if (userInformation.city && country && country.cities)
+      setCity(
+        country.cities.filter((city) => city.id === userInformation.city)[0]
+      );
+  }, [setCity, userInformation, country]);
+
+  const uploadBtnEnabled =
     !!name &&
     !!email &&
     !!age &&
@@ -66,7 +100,7 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
     !!city &&
     !!country &&
     hasUpdatedUserInformation &&
-    (!!file || !!rawData);
+    !!rawData;
 
   const handleReset = () => {
     setName("");
@@ -77,44 +111,47 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
     setCountry("");
     setFile();
     setShowoutput(false);
-    setcsvData("");
-    setRawData("");
+    setcsvData();
+    setRawData();
     setHasError(false);
     saveUserInformation({});
     saveSalesData([]);
     setHasUpdatedUserInformation(false);
   };
 
-  const onUpdateUserInformation = () => {
+  const handleUpdateUserInformation = () => {
     const canUpdateInformation = name && email && gender && country && city;
     if (!canUpdateInformation) {
-      toast.error("Please fill up the missing user informations!!!");
+      toast.error("Please fill up the required fields");
       setHasError(true);
       return;
     }
 
-    const userInformationObject = {
+    const nameArray = name.split(" ");
+
+    const updateUserData = {
       email,
-      name,
+      first_name: nameArray[0],
+      last_name: nameArray[1],
       gender,
       age,
-      country,
-      city,
-      userId: localStorage.getItem("currentUserId"),
+      country: country.id,
+      city: city.id,
     };
 
-    fetch("/api/userinformation", {
-      method: "post",
-      body: JSON.stringify(userInformationObject),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setHasError(false);
-        saveUserInformation(userInformationObject);
-        setHasUpdatedUserInformation(true);
-        toast.success("Successfully updated user information");
+    setUserInformation((currentValue) => {
+      return { ...currentValue, ...updateUserData };
+    });
+
+    updateUserService(localStorage.getItem("currentUserId"), updateUserData)
+      .then((response) => {
+        if (response.status === 200) {
+          setHasError(false);
+          setHasUpdatedUserInformation(true);
+          toast.success("Successfully updated user information");
+        }
       })
-      .catch((err) => console.log(err));
+      .catch((e) => toast.error(e.toString()));
   };
 
   /**
@@ -125,6 +162,7 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
    */
   const updateData = (data) => {
     const csv = Papa.unparse(data.data);
+    console.log("updateData csv", csv);
     setRawData(csv);
   };
 
@@ -146,7 +184,8 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
    * If file is valid, parse the file and execute callback function
    */
   const handleCSVUpload = () => {
-    if (!!file && file.type === "text/csv") {
+    console.log("handleCSVUpload called");
+    if (!!file && (file.name.endsWith(".csv") || file.type === "text/csv")) {
       Papa.parse(file, {
         complete: updateData,
       });
@@ -161,7 +200,11 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
    * Check if rawData (comma seprated string) exists, if yes then convert it to array and call showOutPut function
    */
   const handleSubmit = () => {
+    console.log("handleSubmit rawData", rawData);
     if (!!rawData) {
+      const createSalesRecordData = {
+        sales_data: rawData,
+      };
       Papa.parse(rawData, {
         complete: onShowOutPut,
       });
@@ -173,18 +216,34 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
    */
   const onShowOutPut = (data) => {
     data.data.shift();
-    const rows = sortSaleData(preProcessData(data.data), sortKeys[0]);
-    fetch("/api/sales", {
-      method: "post",
-      body: JSON.stringify(rows),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        saveSalesData(data.sales); // saving sales data in local storage using mock API call.
-        setShowoutput(true);
-        // toast.success("Successfully updated user information");
+    console.log("data.data", data.data);
+    const sales_data = sortSaleData(preProcessData(data.data), sortKeys[0]);
+
+    console.log("sales_data", sales_data);
+    // fetch("/api/sales", {
+    //   method: "post",
+    //   body: JSON.stringify(sales_data),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log("data.sales", data.sales);
+    //     saveSalesData(data.sales); // saving sales data in local storage using mock API call.
+    //     setShowoutput(true);
+    //     // toast.success("Successfully updated user information");
+    //   })
+    //   .catch((err) => console.log(err));
+
+    const createSalesRecordData = {
+      sales_data,
+    };
+    createSalesRecordService(createSalesRecordData)
+      .then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          toast.success("Successfully created sales record");
+          setShowoutput(true);
+        }
       })
-      .catch((err) => console.log(err));
+      .catch((e) => toast.error(e.toString()));
   };
 
   return (
@@ -196,8 +255,7 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
             size="medium"
             color="secondary"
             onClick={() => {
-              logout();
-              onLogout(localStorage.getItem("authToken"));
+              logoutProcess();
             }}
           >
             Logout
@@ -242,8 +300,8 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
               label="Gender"
             >
               {genders.map((item, index) => (
-                <MenuItem value={item} key={index}>
-                  {item}
+                <MenuItem value={item} key={item} selected={item === gender}>
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
                 </MenuItem>
               ))}
             </Select>
@@ -308,14 +366,12 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
               value={country}
               onChange={(event) => {
                 setCountry(event.target.value);
-                setCity("");
-                setCityList(cities[event.target.value]);
               }}
               label="Country"
             >
-              {countries.map((item) => (
-                <MenuItem value={item} key={item}>
-                  {item}
+              {countryList.map((country) => (
+                <MenuItem value={country} key={country.name}>
+                  {country.name}
                 </MenuItem>
               ))}
             </Select>
@@ -336,10 +392,15 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
                 setCity(event.target.value);
               }}
               label="City"
+              disabled={country === undefined || country.cities === undefined}
             >
-              {cityList.map((item) => (
-                <MenuItem value={item}>{item}</MenuItem>
-              ))}
+              {country !== undefined &&
+                country.cities !== undefined &&
+                country.cities.map((city) => (
+                  <MenuItem value={city} key={city.name}>
+                    {city.name}
+                  </MenuItem>
+                ))}
             </Select>
             {!city && hasError && (
               <FormHelperText error>City can not be empty</FormHelperText>
@@ -353,7 +414,7 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
             variant="contained"
             size="medium"
             color="secondary"
-            onClick={onUpdateUserInformation}
+            onClick={handleUpdateUserInformation}
           >
             Update User Data
           </Button>
@@ -369,6 +430,7 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
             type="file"
             fullWidth={true}
             onChange={(event) => {
+              console.log("event.target.files", event.target.files);
               setFile(event.target.files[0]);
             }}
             accept="csv"
@@ -416,7 +478,7 @@ const InputPage = ({ onLogout, setShowoutput, setcsvData }) => {
             size="medium"
             color="primary"
             className={classes.margin}
-            disabled={!btnEnabeled}
+            disabled={!uploadBtnEnabled}
             style={{ marginRight: 20 }}
             onClick={handleSubmit}
           >

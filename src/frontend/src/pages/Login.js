@@ -4,6 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { isValidEmail } from "../utils/helpers";
 import { ToastContainer, toast } from "react-toastify";
 import { isValid } from "date-fns";
+import { loginService } from "../services/auth.service";
+import { setAuthToken } from "../api/axios.instance";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -11,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginPage = ({ onLoginSuccess }) => {
+const LoginPage = ({ setToken, setCurrentUserId }) => {
   const classes = useStyles();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -24,25 +26,29 @@ const LoginPage = ({ onLoginSuccess }) => {
       return;
     }
 
-    // Mock API call for authentication.
-    fetch("/api/token", {
-      method: "post",
-      body: JSON.stringify({ email, password }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        const authToken = data.access_token;
-        const userId = data.user_id;
-        if (!authToken) {
-          toast.error("Email and/or password doesn't match");
-          return;
+    const loginData = {
+      email,
+      password,
+    };
+    loginService(loginData)
+      .then((response) => {
+        if (response.status === 200) {
+          const authToken = response.data.token;
+          const currentUserId = response.data.user_id;
+          if (!authToken) {
+            toast.error("Email and/or password doesn't match");
+            return;
+          }
+          setAuthToken(authToken);
+          setToken(authToken);
+          setCurrentUserId(currentUserId);
+          localStorage.setItem("authToken", authToken);
+          localStorage.setItem("currentUserId", currentUserId);
         }
-        onLoginSuccess(authToken);
-        localStorage.setItem("authToken", authToken);
-        localStorage.setItem("currentUserId", userId);
       })
-      .catch((err) => console.log(err));
+      .catch((e) => {
+        toast.error(e.toString());
+      });
   };
   return (
     <Container className={classes.container} maxWidth="xs">
@@ -52,7 +58,9 @@ const LoginPage = ({ onLoginSuccess }) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  error={(hasError && !email) || (email && !isValidEmail(email))}
+                  error={
+                    (hasError && !email) || (email && !isValidEmail(email))
+                  }
                   helperText={
                     hasError && !email
                       ? "Email can not be empty"

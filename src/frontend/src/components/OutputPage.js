@@ -8,21 +8,33 @@ import useStyles from "../layout/Style";
 import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import { logout } from "../utils/mockApiHelper";
-import { sortSaleData } from "../utils/helpers";
+import {
+  getMostExpensiveProduct,
+  getMostRevenueEarningProduct,
+  getMostSoldProduct,
+  getAverageSale,
+  sortSaleData,
+} from "../utils/helpers";
 import Table from "./Table";
 import Chart from "./Chart";
 import StatTable from "./StatTable";
 import { chartFilters, sortKeys } from "../data";
 import "react-toastify/dist/ReactToastify.css";
 
-const OutputPage = ({ onLogout, handleReset }) => {
-  const [userInfo, setUserInfo] = useState({});
-  const [name, setName] = useState();
-  const [email, setEmail] = useState("");
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("");
-  const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
+import {
+  getSalesListService,
+  getSalesStatisticsService,
+} from "../services/sales.service";
+import { toast } from "react-toastify";
+import { DashboardContext } from "../pages/Dashboard";
+import { MainContext } from "../components/Main";
+import salesData from "../api/sales_data";
+
+const OutputPage = ({ handleReset, userInformation, countryList }) => {
+  const dashboardContext = React.useContext(DashboardContext);
+  const mainContext = React.useContext(MainContext);
+  const { logoutProcess } = dashboardContext;
+  const { name, email, age, gender, city, country } = mainContext;
   const [aggregatedData, setAggregatedData] = useState({});
   const classes = useStyles();
 
@@ -30,45 +42,99 @@ const OutputPage = ({ onLogout, handleReset }) => {
   const [chartFilter, setChartFilter] = useState(chartFilters[0]);
   const [orderBy, setOrderBy] = useState(sortKeys[0]);
 
+  const getAggregatedData = () => {
+    getSalesStatisticsService()
+      .then((response) => {
+        if (response.status === 200) {
+          const salesStatistics = response.data;
+          console.log("salesStatistics", salesStatistics);
+          /**
+           * Expected Response:
+           * {
+           *  "aggregatedData":{
+           *       "avgSaleCurrentUser": number,
+           *       "avgSale": number,
+           *       "mostExpensiveProduct":{
+           *         "userId": string,
+           *         "id": string,
+           *         "date": string,
+           *         "product": string,
+           *         "sales_number": string,
+           *         "revenue": string
+           *       },
+           *       "mostRevenueEarningProduct":{
+           *         "name": string,
+           *         "revenue": number
+           *       },
+           *       "mostSoldProduct":{
+           *         "name": string,
+           *         "count": number
+           *       }
+           *   }
+           * }
+           */
+          const parsedData = {
+            avgSaleCurrentUser: salesStatistics.average_sales_for_current_user,
+            avgSale: salesStatistics.average_sale_all_user,
+            mostExpensiveProduct: {
+              product:
+                salesStatistics.product_highest_revenue_for_current_user
+                  .product_name,
+              revenue:
+                salesStatistics.product_highest_revenue_for_current_user.price,
+            },
+            mostRevenueEarningProduct: {
+              name:
+                salesStatistics.highest_revenue_sale_for_current_user.sale_id,
+              revenue:
+                salesStatistics.highest_revenue_sale_for_current_user.revenue,
+            },
+            mostSoldProduct: {
+              name:
+                salesStatistics.product_highest_sales_number_for_current_user
+                  .product_name,
+              count:
+                salesStatistics.product_highest_sales_number_for_current_user
+                  .price,
+            },
+          };
+          setAggregatedData(parsedData);
+        }
+      })
+      .catch((e) => toast.error(e.toString()));
+  };
+
+  const getCsvData = () => {
+    getSalesListService().then((response) => {
+      if (response.status === 200) {
+        setcsvData(response.data);
+      }
+    });
+  };
+
   useEffect(() => {
+    getAggregatedData();
+    getCsvData();
+
     /**
      * Expected response:
      * {
-     *    userInformation: {
-     *      name: string, 
-     *      email: string, 
-     *      age: number, 
-     *      gender: string, 
-     *      city: string, 
-     *      country: string 
+     *    sales: {
+     *        date: string
+     *        id: string
+     *        product: string
+     *        revenue: string
+     *        sales_number: string
+     *        userId: string
      *    }
      * }
      */
-    fetch("/api/userinformation/" + localStorage.getItem("currentUserId"))
-      .then((res) => res.json())
-      .then((data) => {
-        setUserInfo(data.userInformation);
-      });
-
-      /**
-       * Expected response:
-       * {
-       *    sales: {
-       *        date: string
-       *        id: string
-       *        product: string
-       *        revenue: string
-       *        sales_number: string
-       *        userId: string
-       *    }
-       * }
-       */
-    fetch("/api/sales/" + localStorage.getItem("currentUserId"))
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data.sales);
-        setcsvData([...data.sales]);
-      });
+    // fetch("/api/sales/" + localStorage.getItem("currentUserId"))
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log(data.sales);
+    //     setcsvData([...data.sales]);
+    //   });
 
     /**
      * Expected Response:
@@ -95,24 +161,12 @@ const OutputPage = ({ onLogout, handleReset }) => {
      *   }
      * }
      */
-    fetch("/api/aggregated_data/" + localStorage.getItem("currentUserId"))
-      .then((res) => res.json())
-      .then((data) => {
-        setAggregatedData(data.aggregatedData);
-      });
+    // fetch("/api/aggregated_data/" + localStorage.getItem("currentUserId"))
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setAggregatedData(data.aggregatedData);
+    //   });
   }, []);
-
-  useEffect(() => {
-    if (userInfo?.name) {
-      const { name, email, age, gender, city, country } = userInfo;
-      setName(name);
-      setEmail(email);
-      setAge(age);
-      setGender(gender);
-      setCity(city);
-      setCountry(country);
-    }
-  }, [userInfo]);
 
   useEffect(() => {
     if (csvData && csvData.length) {
@@ -130,8 +184,7 @@ const OutputPage = ({ onLogout, handleReset }) => {
             size="medium"
             color="secondary"
             onClick={() => {
-              logout();
-              onLogout(localStorage.getItem("authToken"));
+              logoutProcess();
             }}
           >
             Logout
@@ -166,7 +219,7 @@ const OutputPage = ({ onLogout, handleReset }) => {
               </p>
             </Grid>
             <Grid item xs={6}>
-              <p style={{ textAlign: "right" }}>{gender}</p>
+              <p style={{ textAlign: "right" }}>{gender.charAt(0).toUpperCase() + gender.slice(1)}</p>
             </Grid>
           </Grid>
           <hr />
@@ -188,7 +241,7 @@ const OutputPage = ({ onLogout, handleReset }) => {
               </p>
             </Grid>
             <Grid item xs={6}>
-              <p style={{ textAlign: "right" }}>{country}</p>
+              <p style={{ textAlign: "right" }}>{country.name}</p>
             </Grid>
           </Grid>
           <hr />
@@ -197,13 +250,13 @@ const OutputPage = ({ onLogout, handleReset }) => {
               <p style={{ textAlign: "left", fontWeight: "bolder" }}>City :</p>
             </Grid>
             <Grid item xs={6}>
-              <p style={{ textAlign: "right" }}>{city}</p>
+              <p style={{ textAlign: "right" }}>{city.name}</p>
             </Grid>
           </Grid>
           <hr />
         </Grid>
       </Grid>
-      {csvData?.length && (
+      {csvData.length > 0 && (
         <Grid container spacing={8}>
           <Grid item xs={6}>
             <Grid container xs={12}>
@@ -225,7 +278,7 @@ const OutputPage = ({ onLogout, handleReset }) => {
                     label="OrderBy"
                   >
                     {sortKeys.map((item, index) => (
-                      <MenuItem value={item} key={index}>
+                      <MenuItem value={item} key={`${index} + ${item}`}>
                         {item}
                       </MenuItem>
                     ))}

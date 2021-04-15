@@ -14,6 +14,8 @@ import {
   getMostSoldProduct,
 } from "../utils/helpers";
 import { generateToken } from "../utils/mockApiHelper";
+import { setAuthToken } from "../api/axios.instance";
+import { logout } from "../utils/mockApiHelper";
 
 createServer({
   models: {
@@ -31,32 +33,32 @@ createServer({
   },
 
   routes() {
-    this.post("/api/token", (schema, request) => {
-      var users = schema.users.all().models;
-      var data = JSON.parse(request.requestBody);
+    // this.post("/api/token", (schema, request) => {
+    //   var users = schema.users.all().models;
+    //   var data = JSON.parse(request.requestBody);
 
-      const user = users.find((item) => {
-        return item.email === data.email && item.password === data.password;
-      });
+    //   const user = users.find((item) => {
+    //     return item.email === data.email && item.password === data.password;
+    //   });
 
-      if (user && user.password === data.password) {
-        var token = generateToken(64);
-        return {
-          access_token: token,
-          token_type: "Bearer",
-          user_id: user.id,
-        };
-      } else {
-        return Response(
-          401,
-          {},
-          {
-            code: 401,
-            message: "Invalid username and/or password, please try again",
-          }
-        );
-      }
-    });
+    //   if (user && user.password === data.password) {
+    //     var token = generateToken(64);
+    //     return {
+    //       access_token: token,
+    //       token_type: "Bearer",
+    //       user_id: user.id,
+    //     };
+    //   } else {
+    //     return Response(
+    //       401,
+    //       {},
+    //       {
+    //         code: 401,
+    //         message: "Invalid username and/or password, please try again",
+    //       }
+    //     );
+    //   }
+    // });
 
     this.post("/api/userinformation", (schema, request) => {
       const payLoad = JSON.parse(request.requestBody);
@@ -107,28 +109,50 @@ createServer({
         },
       };
     });
+
+    this.passthrough();
+    this.passthrough(`http://localhost:8000/**`);
   },
 });
+
+export const DashboardContext = React.createContext({});
 
 const Dashboard = () => {
   const classes = useStyles();
   const [token, setToken] = useState(localStorage.getItem("authToken"));
+  const [currentUserId, setCurrentUserId] = useState(
+    localStorage.getItem("currentUserId")
+  );
+  const logoutProcess = () => {
+    console.log("logoutProcess called");
+    logout();
+    setToken(undefined);
+    setAuthToken(undefined);
+  };
 
   if (!token) {
-    return (
-      <Login
-        onLoginSuccess={setToken}
-      />
-    );
+    return <Login setToken={setToken} setCurrentUserId={setCurrentUserId} />;
+  } else {
+    setAuthToken(token);
   }
   return (
-    <Paper className={classes.control}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Main onLogout={setToken} />
+    <DashboardContext.Provider
+      value={{
+        token,
+        setToken,
+        currentUserId,
+        setCurrentUserId,
+        logoutProcess,
+      }}
+    >
+      <Paper className={classes.control}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Main />
+          </Grid>
         </Grid>
-      </Grid>
-    </Paper>
+      </Paper>
+    </DashboardContext.Provider>
   );
 };
 

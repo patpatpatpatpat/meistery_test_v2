@@ -67,6 +67,7 @@ export const saveSalesData = (salesData) => {
  */
 export const getSalesData = () => {
   const salesDataStr = localStorage.getItem("salesData");
+  console.log("salesDataStr", salesDataStr);
   if (salesDataStr) {
     return JSON.parse(salesDataStr);
   }

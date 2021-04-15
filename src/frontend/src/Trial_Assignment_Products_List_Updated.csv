@@ -1,0 +1,19 @@
+date,product,sales_number,revenue,userld
+2010-2-2,Bulldog clip,5,0.1,1
+2010-2-4,Paper,5,5,4
+2010-2-5,Bulldog clip,7,0.2,3
+2010-2-7,Paper,7,7,6
+2010-2-9,Scissors,5,5.5,2
+2010-2-11,Scissors,7,8.5,5
+2010-3-7,Ruler,7,15,5
+2010-3-8,Ruler,5,10,2
+2010-3-15,Tape dispenser,27,1.25,1
+2010-3-18,Tape dispenser,35,1.75,3
+2010-4-4,Paper,100,20,2
+2010-4-8,Glue,59,3.5,4
+2010-4-9,Paper,150,28,5
+2010-4-12,Glue,79,4.8,6
+2010-4-16,Pencil sharpener,160,2.15,6
+2010-4-19,Pencil sharpener,130,1.35,4
+2010-5-3,Calculator,100,15,2
+2010-5-4,Calculator,140,25,5
