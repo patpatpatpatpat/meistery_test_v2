@@ -16,6 +16,8 @@ import {
 import { generateToken } from "../utils/mockApiHelper";
 import { setAuthToken } from "../api/axios.instance";
 import { logout } from "../utils/mockApiHelper";
+import { logoutService } from "../services/auth.service";
+import { toast } from "react-toastify";
 
 createServer({
   models: {
@@ -124,10 +126,15 @@ const Dashboard = () => {
     localStorage.getItem("currentUserId")
   );
   const logoutProcess = () => {
-    console.log("logoutProcess called");
-    logout();
-    setToken(undefined);
-    setAuthToken(undefined);
+    logoutService()
+      .then((response) => {
+        logout();
+        setToken(undefined);
+        setAuthToken(undefined);
+      })
+      .catch((e) => {
+        toast.error(e.toString());
+      });
   };
 
   if (!token) {
