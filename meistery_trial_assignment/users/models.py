@@ -1,0 +1,75 @@
+from django.db import models
+from django.core import validators
+
+from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
+from django.db.models import CharField
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
+
+
+class CustomUserManager(UserManager):
+    def get_admin_by_natural_key(self, username):
+        return self.get(
+            **{
+                self.model.USERNAME_FIELD: username,
+                "is_superuser": True,
+            }
+        )
+
+
+class User(AbstractBaseUser, PermissionsMixin):
+    """Default user for Meistery Sales Processor."""
+
+    MALE = 'M'
+    FEMALE = 'F'
+    GENDER_CHOICES = (
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+    )
+
+    #: First and last name do not cover name patterns around the globe
+    name = CharField(_("Name of User"), blank=True, max_length=255)
+    username = models.CharField(
+        _("username"),
+        max_length=254,
+        unique=True,
+        help_text=_("Required. 254 characters or fewer. Letters, digits and @/./+/-/_ only."),
+        validators=[
+            validators.RegexValidator(
+                r"^[\w.@+-]+$",
+                _(
+                    "Enter a valid username. This value may contain only "
+                    "letters, numbers "
+                    "and @/./+/-/_ characters."
+                ),
+            ),
+        ],
+        error_messages={
+            "unique": _("A user with that username already exists."),
+        },
+    )
+    email = models.EmailField(_("email address"), unique=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    age = models.PositiveIntegerField()
+
+    is_staff = models.BooleanField(
+        _("staff status"),
+        default=False,
+        help_text=_("Designates whether the user can log into this admin site."),
+    )
+    is_superuser = models.BooleanField(default=False)
+    is_active = models.BooleanField(
+        _("active"),
+        default=True,
+        help_text=_(
+            "Designates whether this user should be treated as active. " "Unselect this instead of deleting accounts."
+        ),
+    )
+    
+    objects = CustomUserManager()
+    REQUIRED_FIELDS = ['username', 'age', 'gender']
+    USERNAME_FIELD = 'email'
+
+    class Meta:
+        verbose_name = _("user")
+        verbose_name_plural = _("users")
