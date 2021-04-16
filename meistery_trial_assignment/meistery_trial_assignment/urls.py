@@ -17,12 +17,9 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from . import views
 
-from rest_framework.authtoken.views import obtain_auth_token
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    path("api/v1/login", views.CustomAuthToken.as_view(), name="login"),
+    path("api/v1/", include("meistery_trial_assignment.api.urls")),
 
     # DRF
     path('api-auth/', include('rest_framework.urls')),

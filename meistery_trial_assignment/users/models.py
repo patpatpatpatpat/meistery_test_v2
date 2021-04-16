@@ -20,8 +20,8 @@ class CustomUserManager(UserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """Default user for Meistery Sales Processor."""
 
-    MALE = 'M'
-    FEMALE = 'F'
+    MALE = 'male'
+    FEMALE = 'female'
     GENDER_CHOICES = (
         (MALE, 'Male'),
         (FEMALE, 'Female'),
@@ -49,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         },
     )
     email = models.EmailField(_("email address"), unique=True)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
     age = models.PositiveIntegerField()
 
     is_staff = models.BooleanField(
@@ -65,7 +65,9 @@ class User(AbstractBaseUser, PermissionsMixin):
             "Designates whether this user should be treated as active. " "Unselect this instead of deleting accounts."
         ),
     )
-    
+    country = models.ForeignKey('Country', on_delete=models.CASCADE, blank=True, null=True)
+    city = models.ForeignKey('City', on_delete=models.CASCADE, blank=True, null=True)
+
     objects = CustomUserManager()
     REQUIRED_FIELDS = ['username', 'age', 'gender']
     USERNAME_FIELD = 'email'
@@ -73,3 +75,26 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _("user")
         verbose_name_plural = _("users")
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = _("country")
+        verbose_name_plural = _("countries")
+
+    def __str__(self):
+        return self.name
+
+
+class City(models.Model):
+    name = models.CharField(max_length=255)
+    country = models.ForeignKey('Country', on_delete=models.CASCADE)  # TODO: set related_name="cities"
+
+    class Meta:
+        verbose_name = _("city")
+        verbose_name_plural = _('cities')
+
+    def __str__(self):
+        return f'{self.name}, {self.country}'
