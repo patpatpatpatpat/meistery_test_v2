@@ -57,7 +57,7 @@ class SaleStatisticsView(APIView):
 
         # TODO
         product_highest_revenue_for_current_user = 0
-        product_highest_sales_number_for_current_user = user.sale_set.order_by('-')
+        product_highest_sales_number_for_current_user = 0
 
         return Response({
             "average_sales_for_current_user": average_sales_for_current_user,
