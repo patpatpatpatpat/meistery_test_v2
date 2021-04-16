@@ -12,7 +12,7 @@ response: {
 === AUTHORIZED ===
 --- GET ---
 GET /api/v1/logout
-response: any
+response: status should be 200
 GET /api/v1/users/${id}
 response: {
   "id": 1,
