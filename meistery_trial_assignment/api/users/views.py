@@ -24,13 +24,13 @@ class CountryListView(ListAPIView):
     queryset = Country.objects.all()
 
 
-class LogoutView(APIView):  # TODO: use login_required?
+class LogoutView(APIView):
     def get(self, request, *args, **kwargs):
         request.user.auth_token.delete()
         return Response(status=status.HTTP_200_OK)
 
 
-class CustomAuthToken(ObtainAuthToken):  # TODO: rename view
+class LoginView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         # TODO: update serializer
         updated_data = {
