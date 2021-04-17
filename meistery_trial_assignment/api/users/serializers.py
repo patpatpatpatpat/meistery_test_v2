@@ -1,6 +1,6 @@
-from users.models import User, Country, City
-
 from rest_framework import serializers
+
+from users.models import City, Country, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -29,7 +29,7 @@ class CitySerializer(serializers.ModelSerializer):
 
 
 class CountrySerializer(serializers.ModelSerializer):
-    cities = CitySerializer(source="city_set", many=True)
+    cities = CitySerializer(source="city_set", many=True, required=False)
 
     class Meta:
         model = Country
