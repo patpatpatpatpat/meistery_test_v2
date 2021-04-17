@@ -1,0 +1,281 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`if it renders correctly 1`] = `
+<div
+  className="MuiContainer-root makeStyles-container-1 MuiContainer-maxWidthXs"
+>
+  <form>
+    <div
+      className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
+      >
+        <div
+          className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2"
+        >
+          <div
+            className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
+          >
+            <div
+              className="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+            >
+              <label
+                className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+                data-shrink={false}
+              >
+                Email
+              </label>
+              <div
+                className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+                onClick={[Function]}
+              >
+                <input
+                  aria-invalid={false}
+                  autoFocus={false}
+                  className="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+                  disabled={false}
+                  name="email"
+                  onAnimationStart={[Function]}
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  required={false}
+                  type="text"
+                />
+                <fieldset
+                  aria-hidden={true}
+                  className="PrivateNotchedOutline-root-2 MuiOutlinedInput-notchedOutline"
+                >
+                  <legend
+                    className="PrivateNotchedOutline-legendLabelled-4"
+                  >
+                    <span>
+                      Email
+                    </span>
+                  </legend>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+          <div
+            className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
+          >
+            <div
+              className="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+            >
+              <label
+                className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+                data-shrink={false}
+              >
+                Password
+              </label>
+              <div
+                className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+                onClick={[Function]}
+              >
+                <input
+                  aria-invalid={false}
+                  autoFocus={false}
+                  className="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+                  disabled={false}
+                  name="password"
+                  onAnimationStart={[Function]}
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  required={false}
+                  type="password"
+                />
+                <fieldset
+                  aria-hidden={true}
+                  className="PrivateNotchedOutline-root-2 MuiOutlinedInput-notchedOutline"
+                >
+                  <legend
+                    className="PrivateNotchedOutline-legendLabelled-4"
+                  >
+                    <span>
+                      Password
+                    </span>
+                  </legend>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
+      >
+        <button
+          className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary MuiButton-fullWidth"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onDragLeave={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          tabIndex={0}
+          type="submit"
+        >
+          <span
+            className="MuiButton-label"
+          >
+            Log in
+          </span>
+        </button>
+      </div>
+    </div>
+  </form>
+  <div
+    className="Toastify"
+  />
+</div>
+`;
+
+exports[`renders correctly 1`] = `
+<div
+  className="MuiContainer-root makeStyles-container-1 MuiContainer-maxWidthXs"
+>
+  <form>
+    <div
+      className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-3"
+    >
+      <div
+        className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
+      >
+        <div
+          className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2"
+        >
+          <div
+            className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
+          >
+            <div
+              className="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+            >
+              <label
+                className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+                data-shrink={false}
+              >
+                Email
+              </label>
+              <div
+                className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+                onClick={[Function]}
+              >
+                <input
+                  aria-invalid={false}
+                  autoFocus={false}
+                  className="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+                  disabled={false}
+                  name="email"
+                  onAnimationStart={[Function]}
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  required={false}
+                  type="text"
+                />
+                <fieldset
+                  aria-hidden={true}
+                  className="PrivateNotchedOutline-root-2 MuiOutlinedInput-notchedOutline"
+                >
+                  <legend
+                    className="PrivateNotchedOutline-legendLabelled-4"
+                  >
+                    <span>
+                      Email
+                    </span>
+                  </legend>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+          <div
+            className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
+          >
+            <div
+              className="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+            >
+              <label
+                className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense MuiInputLabel-outlined"
+                data-shrink={false}
+              >
+                Password
+              </label>
+              <div
+                className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl MuiInputBase-marginDense MuiOutlinedInput-marginDense"
+                onClick={[Function]}
+              >
+                <input
+                  aria-invalid={false}
+                  autoFocus={false}
+                  className="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMarginDense MuiOutlinedInput-inputMarginDense"
+                  disabled={false}
+                  name="password"
+                  onAnimationStart={[Function]}
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  required={false}
+                  type="password"
+                />
+                <fieldset
+                  aria-hidden={true}
+                  className="PrivateNotchedOutline-root-2 MuiOutlinedInput-notchedOutline"
+                >
+                  <legend
+                    className="PrivateNotchedOutline-legendLabelled-4"
+                  >
+                    <span>
+                      Password
+                    </span>
+                  </legend>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12"
+      >
+        <button
+          className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary MuiButton-fullWidth"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onDragLeave={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          tabIndex={0}
+          type="submit"
+        >
+          <span
+            className="MuiButton-label"
+          >
+            Log in
+          </span>
+        </button>
+      </div>
+    </div>
+  </form>
+  <div
+    className="Toastify"
+  />
+</div>
+`;
