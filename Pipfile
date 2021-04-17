@@ -13,6 +13,9 @@ gunicorn = "*"
 whitenoise = "*"
 python-dotenv = "*"
 psycopg2 = "*"
+flake8 = "*"
+black = "*"
+isort = "*"
 
 [dev-packages]
 

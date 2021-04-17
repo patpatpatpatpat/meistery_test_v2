@@ -7,5 +7,5 @@ export const getUserRecordService = (id) => {
     return axios.get(`/api/v1/users/${id}`);
   };
 export const updateUserService = (id, data) => {
-  return axios.patch(`/api/v1/users/${id}`, data);
+  return axios.patch(`/api/v1/users/${id}/`, data);
 }
