@@ -68,10 +68,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         ),
     )
     country = models.ForeignKey(
-        "Country", on_delete=models.CASCADE, blank=True, null=True,
+        "Country",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
         related_name="users",
     )
-    city = models.ForeignKey("City", on_delete=models.CASCADE, blank=True, null=True, related_name="users")
+    city = models.ForeignKey(
+        "City", on_delete=models.CASCADE, blank=True, null=True, related_name="users"
+    )
 
     objects = CustomUserManager()
     REQUIRED_FIELDS = ["username", "age", "gender", "first_name", "last_name"]
@@ -96,7 +101,8 @@ class Country(models.Model):
 class City(models.Model):
     name = models.CharField(max_length=255)
     country = models.ForeignKey(
-        "Country", on_delete=models.CASCADE,
+        "Country",
+        on_delete=models.CASCADE,
         related_name="cities",
     )
 

@@ -49,9 +49,7 @@ class SaleStatisticsView(APIView):
         total_sales = Sale.objects.count()
         average_sale_all_user = total_revenue / total_sales
 
-        highest_revenue_sale_for_current_user = user.sales.order_by(
-            "-revenue"
-        ).first()
+        highest_revenue_sale_for_current_user = user.sales.order_by("-revenue").first()
 
         products_sold_by_user = user.sales.values_list("product", flat=True)
 
