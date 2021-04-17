@@ -15,7 +15,7 @@ class SaleViewSet(
     serializer_class = SaleSerializer
 
     def get_queryset(self):
-        return Sale.objects.filter(user_id=self.request.user.id)
+        return self.request.user.sales.all()
 
     def create(self, request, *args, **kwargs):
         bulk_data = request.data.get("sales_data")
@@ -37,10 +37,10 @@ class SaleViewSet(
 class SaleStatisticsView(APIView):
     def get(self, request, *args, **kwargs):
         user = request.user
-        total_revenue_for_user = user.sale_set.aggregate(total_revenue=Sum("revenue"))[
+        total_revenue_for_user = user.sales.aggregate(total_revenue=Sum("revenue"))[
             "total_revenue"
         ]
-        total_sales_for_user = user.sale_set.count()
+        total_sales_for_user = user.sales.count()
         average_sales_for_current_user = total_revenue_for_user / total_sales_for_user
 
         total_revenue = Sale.objects.aggregate(total_revenue=Sum("revenue"))[
@@ -49,11 +49,11 @@ class SaleStatisticsView(APIView):
         total_sales = Sale.objects.count()
         average_sale_all_user = total_revenue / total_sales
 
-        highest_revenue_sale_for_current_user = user.sale_set.order_by(
+        highest_revenue_sale_for_current_user = user.sales.order_by(
             "-revenue"
         ).first()
 
-        products_sold_by_user = user.sale_set.values_list("product", flat=True)
+        products_sold_by_user = user.sales.values_list("product", flat=True)
 
         # TODO
         product_highest_revenue_for_current_user = 0

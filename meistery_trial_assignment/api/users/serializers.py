@@ -29,7 +29,7 @@ class CitySerializer(serializers.ModelSerializer):
 
 
 class CountrySerializer(serializers.ModelSerializer):
-    cities = CitySerializer(source="city_set", many=True, required=False)
+    cities = CitySerializer(many=True, required=False)
 
     class Meta:
         model = Country
