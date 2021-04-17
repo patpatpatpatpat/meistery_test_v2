@@ -16,6 +16,8 @@ psycopg2 = "*"
 flake8 = "*"
 black = "*"
 isort = "*"
+pytest-django = "*"
+factory-boy = "*"
 
 [dev-packages]
 

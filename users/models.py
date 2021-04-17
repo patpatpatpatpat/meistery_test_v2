@@ -2,7 +2,6 @@ from django.db import models
 from django.core import validators
 
 from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
-from django.db.models import CharField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -27,8 +26,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         (FEMALE, 'Female'),
     )
 
-    #: First and last name do not cover name patterns around the globe
-    name = CharField(_("Name of User"), blank=True, max_length=255)
+    first_name = models.CharField(_("First name"), blank=True, max_length=255)
+    last_name = models.CharField(_("Last name"), blank=True, max_length=255)
     username = models.CharField(
         _("username"),
         max_length=254,
@@ -69,7 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     city = models.ForeignKey('City', on_delete=models.CASCADE, blank=True, null=True)
 
     objects = CustomUserManager()
-    REQUIRED_FIELDS = ['username', 'age', 'gender']
+    REQUIRED_FIELDS = ['username', 'age', 'gender', 'first_name', 'last_name']
     USERNAME_FIELD = 'email'
 
     class Meta:
