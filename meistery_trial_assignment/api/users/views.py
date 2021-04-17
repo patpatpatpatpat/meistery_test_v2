@@ -13,9 +13,8 @@ from rest_framework.views import APIView
 
 
 class UserViewSet(
-        mixins.RetrieveModelMixin,
-        mixins.UpdateModelMixin,
-        viewsets.GenericViewSet):
+    mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
+):
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
@@ -35,15 +34,18 @@ class CustomAuthToken(ObtainAuthToken):  # TODO: rename view
     def post(self, request, *args, **kwargs):
         # TODO: update serializer
         updated_data = {
-            'username':  request.data['email'],
-            'password': request.data['password'],
+            "username": request.data["email"],
+            "password": request.data["password"],
         }
-        serializer = self.serializer_class(data=updated_data,
-                                           context={'request': request})
+        serializer = self.serializer_class(
+            data=updated_data, context={"request": request}
+        )
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
+        user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user_id': user.pk,
-        })
+        return Response(
+            {
+                "token": token.key,
+                "user_id": user.pk,
+            }
+        )

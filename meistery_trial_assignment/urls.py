@@ -18,13 +18,10 @@ from django.urls import path, re_path, include
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     path("api/v1/", include("meistery_trial_assignment.api.urls")),
-
     # DRF
-    path('api-auth/', include('rest_framework.urls')),
-
+    path("api-auth/", include("rest_framework.urls")),
     # SPA view
     re_path(r"^.*$", views.react, name="home"),
-
 ]

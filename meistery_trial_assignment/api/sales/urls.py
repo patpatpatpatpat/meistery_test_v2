@@ -5,9 +5,9 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 
-router.register(r'sales', views.SaleViewSet, basename='sales')
+router.register(r"sales", views.SaleViewSet, basename="sales")
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('sale_statistics/', views.SaleStatisticsView.as_view()),
+    path("", include(router.urls)),
+    path("sale_statistics/", views.SaleStatisticsView.as_view()),
 ]

@@ -7,10 +7,10 @@ class SaleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sale
         fields = (
-            'id',
-            'product',
-            'revenue',
-            'sales_number',
-            'date',
-            'user',  # TODO: rename to user_id
+            "id",
+            "product",
+            "revenue",
+            "sales_number",
+            "date",
+            "user",  # TODO: rename to user_id
         )
