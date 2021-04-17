@@ -1,5 +1,5 @@
-import "../api/axios.instance"
-import axios
+import axios from "../api/axios.instance"
+
 
 export const getCountryCityListService = () => {
     return axios.get("/api/v1/countries");
