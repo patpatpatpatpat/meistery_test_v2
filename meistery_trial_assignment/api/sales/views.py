@@ -21,19 +21,15 @@ class SaleViewSet(
         bulk_data = request.data.get("sales_data")
         bulk = isinstance(bulk_data, list)
 
-        # TODO: add another ID field for "id" in bulk create?
         if not bulk:
             return super().create(request, *args, **kwargs)
-
-        for data in bulk_data:
-            data["user"] = request.user.id
 
         serializer = self.get_serializer(data=bulk_data, many=True)
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer.save()
+        serializer.save(user=request.user)
 
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
