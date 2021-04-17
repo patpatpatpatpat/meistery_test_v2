@@ -11,6 +11,8 @@ class UserAdmin(admin.ModelAdmin):
         "username",
         "gender",
         "age",
+        "country",
+        "city",
     )
 
 
