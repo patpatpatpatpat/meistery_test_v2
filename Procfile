@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web: gunicorn backend.wsgi --log-file -
+web: gunicorn meistery_trial_assignment.wsgi --log-file -
