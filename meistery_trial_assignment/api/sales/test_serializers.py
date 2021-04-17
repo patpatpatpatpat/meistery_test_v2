@@ -15,12 +15,12 @@ class TestSaleSerializer:
         serializer = serializers.SaleSerializer(sale)
 
         expected_data = {
-            'id': sale.id,
-            'product': sale.product,
-            'revenue': sale.revenue,
-            'sales_number': sale.sales_number,
-            'user_id': sale.user.id,
-            'date': sale.date.isoformat(),
+            "id": sale.id,
+            "product": sale.product,
+            "revenue": sale.revenue,
+            "sales_number": sale.sales_number,
+            "user_id": sale.user.id,
+            "date": sale.date.isoformat(),
         }
 
         assert serializer.data == expected_data

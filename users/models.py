@@ -19,11 +19,11 @@ class CustomUserManager(UserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """Default user for Meistery Sales Processor."""
 
-    MALE = 'male'
-    FEMALE = 'female'
+    MALE = "male"
+    FEMALE = "female"
     GENDER_CHOICES = (
-        (MALE, 'Male'),
-        (FEMALE, 'Female'),
+        (MALE, "Male"),
+        (FEMALE, "Female"),
     )
 
     first_name = models.CharField(_("First name"), blank=True, max_length=255)
@@ -32,7 +32,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         _("username"),
         max_length=254,
         unique=True,
-        help_text=_("Required. 254 characters or fewer. Letters, digits and @/./+/-/_ only."),
+        help_text=_(
+            "Required. 254 characters or fewer. Letters, digits and @/./+/-/_ only."
+        ),
         validators=[
             validators.RegexValidator(
                 r"^[\w.@+-]+$",
@@ -61,15 +63,18 @@ class User(AbstractBaseUser, PermissionsMixin):
         _("active"),
         default=True,
         help_text=_(
-            "Designates whether this user should be treated as active. " "Unselect this instead of deleting accounts."
+            "Designates whether this user should be treated as active. "
+            "Unselect this instead of deleting accounts."
         ),
     )
-    country = models.ForeignKey('Country', on_delete=models.CASCADE, blank=True, null=True)
-    city = models.ForeignKey('City', on_delete=models.CASCADE, blank=True, null=True)
+    country = models.ForeignKey(
+        "Country", on_delete=models.CASCADE, blank=True, null=True
+    )
+    city = models.ForeignKey("City", on_delete=models.CASCADE, blank=True, null=True)
 
     objects = CustomUserManager()
-    REQUIRED_FIELDS = ['username', 'age', 'gender', 'first_name', 'last_name']
-    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ["username", "age", "gender", "first_name", "last_name"]
+    USERNAME_FIELD = "email"
 
     class Meta:
         verbose_name = _("user")
@@ -89,11 +94,13 @@ class Country(models.Model):
 
 class City(models.Model):
     name = models.CharField(max_length=255)
-    country = models.ForeignKey('Country', on_delete=models.CASCADE)  # TODO: set related_name="cities"
+    country = models.ForeignKey(
+        "Country", on_delete=models.CASCADE
+    )  # TODO: set related_name="cities"
 
     class Meta:
         verbose_name = _("city")
-        verbose_name_plural = _('cities')
+        verbose_name_plural = _("cities")
 
     def __str__(self):
-        return f'{self.name}, {self.country}'
+        return f"{self.name}, {self.country}"

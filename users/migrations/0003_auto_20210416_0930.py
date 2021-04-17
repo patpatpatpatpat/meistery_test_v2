@@ -6,21 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0002_auto_20210416_0830'),
+        ("users", "0002_auto_20210416_0830"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='city',
-            options={'verbose_name': 'city', 'verbose_name_plural': 'cities'},
+            name="city",
+            options={"verbose_name": "city", "verbose_name_plural": "cities"},
         ),
         migrations.AlterModelOptions(
-            name='country',
-            options={'verbose_name': 'country', 'verbose_name_plural': 'countries'},
+            name="country",
+            options={"verbose_name": "country", "verbose_name_plural": "countries"},
         ),
         migrations.AlterField(
-            model_name='user',
-            name='gender',
-            field=models.CharField(choices=[('male', 'Male'), ('female', 'Female')], max_length=6),
+            model_name="user",
+            name="gender",
+            field=models.CharField(
+                choices=[("male", "Male"), ("female", "Female")], max_length=6
+            ),
         ),
     ]

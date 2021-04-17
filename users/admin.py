@@ -1,6 +1,7 @@
 from django.contrib import admin
 from . import models
 
+
 @admin.register(models.User)
 class UserAdmin(admin.ModelAdmin):
     list_display = (
@@ -15,14 +16,12 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(models.Country)
 class CountryAdmin(admin.ModelAdmin):
-    list_display = (
-        'name',
-    )
+    list_display = ("name",)
 
 
 @admin.register(models.City)
 class CityAdmin(admin.ModelAdmin):
     list_display = (
-        'name',
-        'country',
+        "name",
+        "country",
     )

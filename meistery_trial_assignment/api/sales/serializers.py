@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 
 class SaleSerializer(serializers.ModelSerializer):
-    user_id = serializers.SerializerMethodField('get_user_id')
+    user_id = serializers.SerializerMethodField("get_user_id")
 
     class Meta:
         model = Sale
