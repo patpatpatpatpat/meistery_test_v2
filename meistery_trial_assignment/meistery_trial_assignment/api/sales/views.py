@@ -18,11 +18,11 @@ class SaleViewSet(
     def get_queryset(self):
         return Sale.objects.filter(user_id=self.request.user.id)
 
-    # TOD: create mixin
     def create(self, request, *args, **kwargs):
         bulk_data = request.data.get('sales_data')
         bulk = isinstance(bulk_data, list)
 
+        # TODO: add another ID field for "id" in bulk create?
         if not bulk:
             return super().create(request, *args, **kwargs)
 

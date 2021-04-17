@@ -4,7 +4,7 @@ const defaultOptions = {
   headers: {
     "Content-Type": "application/json",
   },
-  xsrfHeaderName: "X-XSRF-TOKEN",
+  xsrfHeaderName: "X-CSRFTOKEN",
   xsrfCookieName: "csrftoken",
 };
 

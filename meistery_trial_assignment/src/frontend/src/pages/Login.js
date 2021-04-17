@@ -33,6 +33,7 @@ const LoginPage = ({ setToken, setCurrentUserId }) => {
     loginService(loginData)
       .then((response) => {
         if (response.status === 200) {
+          console.log(response.data);
           const authToken = response.data.token;
           const currentUserId = response.data.user_id;
           if (!authToken) {
