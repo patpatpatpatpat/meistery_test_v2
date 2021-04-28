@@ -1,0 +1,30 @@
+<style type="text/css">
+    .center {
+  margin: auto;
+  width: 50%;
+  border: 3px solid blue;
+  padding: 10px;
+}
+</style>
+<div class="center">
+    <h1>Edit User: {{ user.email }}</h1>
+    <form method="POST" action="{% url 'edit_user' user.id %}">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        <input type="submit" value="Update">
+    </form>
+
+    <hr>
+    <h2>Products Sold</h2>
+    <form method="POST" action="{% url 'add_sales_for_user' user.id %}">
+        {% csrf_token %}
+        {{ sale_csv_form.as_p }}
+        <input type="submit" value="Update">
+    </form>
+    <hr>
+    <h2>Clear Product Sales Data for: {{ user.email }}</h2>
+    <form method="POST" action="{% url 'clear_sales_for_user' user.id %}">
+      {% csrf_token %}
+      <input type="submit" value="Clear">
+    </form>
+</div>
