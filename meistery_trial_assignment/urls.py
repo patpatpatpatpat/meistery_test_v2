@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from . import views
 from users.views import CreateUserView, EditUserView
-from sales.views import ClearUserSalesView, AddUserSalesView
+from sales.views import ClearUserSalesView, AddUserSalesView, ProductInfoInputPage
 
 
 urlpatterns = [
@@ -28,6 +28,7 @@ urlpatterns = [
     path("edit_user/<pk>/", EditUserView.as_view(), name="edit_user"),
     path("edit_user/<pk>/clear_sales/", ClearUserSalesView.as_view(), name="clear_sales_for_user"),
     path("edit_user/<pk>/add_sales/", AddUserSalesView.as_view(), name="add_sales_for_user"),
+    path("product_info_input/", ProductInfoInputPage.as_view(), name="product_info_input"),
 
     # DRF
     path("api-auth/", include("rest_framework.urls")),
