@@ -6,7 +6,7 @@ from django.views.generic import FormView, View
 
 from users.models import User
 
-from .forms import AddSalesForUserForm, SaleCSVForm, SaleForm
+from .forms import AddSalesForUserForm, SaleCSVForm
 
 
 class ClearUserSalesView(views.LoginRequiredMixin, views.SuperuserRequiredMixin, View):
@@ -22,22 +22,8 @@ class AddUserSalesView(views.LoginRequiredMixin, views.SuperuserRequiredMixin, V
         form = SaleCSVForm(request.POST)
 
         if form.is_valid():
-            sales_data = form.cleaned_data["csv"].split("\n")
-            sales_data = sales_data[1:]  # Exclude column names
-
-            for sale_data in sales_data:
-                date, product, sales_number, revenue = sale_data.strip().split(",")
-                as_dict = {
-                    "date": date,
-                    "product": product,
-                    "sales_number": sales_number,
-                    "revenue": revenue,
-                    "user": user,
-                }
-                form = SaleForm(as_dict)
-
-                if form.is_valid():
-                    form.save()
+            sale_created_count = form.save(user=user)
+            messages.success(request, f'{sale_created_count} Sale for user {user.email} created.')
         else:
             messages.error(request, 'Invalid CSV input. Please check your data.')
 
@@ -52,22 +38,7 @@ class ProductInfoInputPage(
 
     def form_valid(self, form):
         user = form.cleaned_data["user"]
-
-        sales_data = form.cleaned_data["csv"].split("\n")
-        sales_data = sales_data[1:]  # Exclude column names
-
-        for sale_data in sales_data:
-            date, product, sales_number, revenue = sale_data.strip().split(",")
-            as_dict = {
-                "date": date,
-                "product": product,
-                "sales_number": sales_number,
-                "revenue": revenue,
-                "user": user,
-            }
-            form = SaleForm(as_dict)
-
-            if form.is_valid():
-                form.save()
+        sale_created_count = form.save(user)
+        messages.success(self.request, f'{sale_created_count} Sale for user {user.email} created.')
 
         return HttpResponseRedirect(user.get_absolute_url())
