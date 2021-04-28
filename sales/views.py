@@ -1,4 +1,5 @@
 from braces import views
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import FormView, View
@@ -37,8 +38,9 @@ class AddUserSalesView(views.LoginRequiredMixin, views.SuperuserRequiredMixin, V
 
                 if form.is_valid():
                     form.save()
+        else:
+            messages.error(request, 'Invalid CSV input. Please check your data.')
 
-        # TODO: do something if form is not valid
         return HttpResponseRedirect(user.get_absolute_url())
 
 
