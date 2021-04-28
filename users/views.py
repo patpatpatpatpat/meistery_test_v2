@@ -10,21 +10,23 @@ from braces import views
 from sales.forms import SaleCSVForm, SaleForm
 
 
-class CreateUserView(views.LoginRequiredMixin, views.SuperuserRequiredMixin, CreateView):
-    template_name = 'create_user.html'
+class CreateUserView(
+    views.LoginRequiredMixin, views.SuperuserRequiredMixin, CreateView
+):
+    template_name = "create_user.html"
     form_class = UserForm
 
 
 class EditUserView(views.LoginRequiredMixin, views.SuperuserRequiredMixin, DetailView):
-    template_name = 'edit_user.html'
+    template_name = "edit_user.html"
     queryset = User.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         edit_user_form = UserForm(instance=self.get_object())
 
-        context['user_form'] = edit_user_form
-        context['sale_csv_form'] = SaleCSVForm()
+        context["user_form"] = edit_user_form
+        context["sale_csv_form"] = SaleCSVForm()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -35,7 +37,7 @@ class EditUserView(views.LoginRequiredMixin, views.SuperuserRequiredMixin, Detai
             return HttpResponseRedirect(self.get_object().get_absolute_url())
         else:
             context = {}
-            context['user_form'] = edit_user_form
-            context['sale_csv_form'] = SaleCSVForm()
-            context['user'] = self.get_object()
+            context["user_form"] = edit_user_form
+            context["sale_csv_form"] = SaleCSVForm()
+            context["user"] = self.get_object()
             return self.render_to_response(context)

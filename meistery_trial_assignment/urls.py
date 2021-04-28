@@ -23,13 +23,21 @@ from sales.views import ClearUserSalesView, AddUserSalesView, ProductInfoInputPa
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include("meistery_trial_assignment.api.urls")),
-
     path("create_user/", CreateUserView.as_view(), name="create_user"),
     path("edit_user/<pk>/", EditUserView.as_view(), name="edit_user"),
-    path("edit_user/<pk>/clear_sales/", ClearUserSalesView.as_view(), name="clear_sales_for_user"),
-    path("edit_user/<pk>/add_sales/", AddUserSalesView.as_view(), name="add_sales_for_user"),
-    path("product_info_input/", ProductInfoInputPage.as_view(), name="product_info_input"),
-
+    path(
+        "edit_user/<pk>/clear_sales/",
+        ClearUserSalesView.as_view(),
+        name="clear_sales_for_user",
+    ),
+    path(
+        "edit_user/<pk>/add_sales/",
+        AddUserSalesView.as_view(),
+        name="add_sales_for_user",
+    ),
+    path(
+        "product_info_input/", ProductInfoInputPage.as_view(), name="product_info_input"
+    ),
     # DRF
     path("api-auth/", include("rest_framework.urls")),
     # SPA view
