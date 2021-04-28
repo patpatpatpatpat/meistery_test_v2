@@ -20,4 +20,11 @@ class UserForm(UserCreationForm):
             "city",
         )
 
-    # TODO custom validation: city must be under country
+    def clean(self):
+        cleaned_data = super().clean()
+        city = cleaned_data.get('city')
+        country = cleaned_data.get('country')
+
+        if city and country:
+            if not country.cities.filter(id=city.id).exists():
+                self.add_error('city', f'{city.name} is not under {country.name}')
