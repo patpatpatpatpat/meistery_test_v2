@@ -12,7 +12,8 @@ from .forms import AddSalesForUserForm, SaleCSVForm
 class ClearUserSalesView(views.LoginRequiredMixin, views.SuperuserRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         user = get_object_or_404(User, pk=kwargs["pk"])
-        user.sales.all().delete()
+        num_deleted, _ = user.sales.all().delete()
+        messages.success(request, f'{num_deleted} Sale object/s deleted for {user.email}.')
         return HttpResponseRedirect(user.get_absolute_url())
 
 
