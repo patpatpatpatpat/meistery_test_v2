@@ -17,6 +17,8 @@ flake8 = "*"
 isort = "*"
 pytest-django = "*"
 factory-boy = "*"
+django-braces = "*"
+ipdb = "*"
 
 [dev-packages]
 
