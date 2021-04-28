@@ -13,7 +13,9 @@ class ClearUserSalesView(views.LoginRequiredMixin, views.SuperuserRequiredMixin,
     def post(self, request, *args, **kwargs):
         user = get_object_or_404(User, pk=kwargs["pk"])
         num_deleted, _ = user.sales.all().delete()
-        messages.success(request, f'{num_deleted} Sale object/s deleted for {user.email}.')
+        messages.success(
+            request, f"{num_deleted} Sale object/s deleted for {user.email}."
+        )
         return HttpResponseRedirect(user.get_absolute_url())
 
 
@@ -24,9 +26,11 @@ class AddUserSalesView(views.LoginRequiredMixin, views.SuperuserRequiredMixin, V
 
         if form.is_valid():
             sale_created_count = form.save(user=user)
-            messages.success(request, f'{sale_created_count} Sale for user {user.email} created.')
+            messages.success(
+                request, f"{sale_created_count} Sale for user {user.email} created."
+            )
         else:
-            messages.error(request, 'Invalid CSV input. Please check your data.')
+            messages.error(request, "Invalid CSV input. Please check your data.")
 
         return HttpResponseRedirect(user.get_absolute_url())
 
@@ -40,6 +44,8 @@ class ProductInfoInputPage(
     def form_valid(self, form):
         user = form.cleaned_data["user"]
         sale_created_count = form.save(user)
-        messages.success(self.request, f'{sale_created_count} Sale for user {user.email} created.')
+        messages.success(
+            self.request, f"{sale_created_count} Sale for user {user.email} created."
+        )
 
         return HttpResponseRedirect(user.get_absolute_url())
