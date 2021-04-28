@@ -12,3 +12,6 @@ class SaleAdmin(admin.ModelAdmin):
         "sales_number",
         "revenue",
     )
+    list_filter = (
+        "user",
+    )

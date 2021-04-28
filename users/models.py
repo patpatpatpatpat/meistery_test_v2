@@ -86,6 +86,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name = _("user")
         verbose_name_plural = _("users")
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('edit_user', args=[self.id,])
 
 class Country(models.Model):
     name = models.CharField(max_length=255)
