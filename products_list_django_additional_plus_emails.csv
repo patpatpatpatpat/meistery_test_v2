@@ -1,0 +1,41 @@
+date,product,sales_number,revenue,user_email
+2010-2-2,Pencil,8,0.1,user744@example.com
+2010-2-4,NoteBook,8,8,mike17@example.com
+2010-2-9,Envelope,8,8.8,mike17@example.com
+2010-4-8,Pin,8,10,user594@example.com
+2010-4-18,Basket,26,1.28,user744@example.com
+2010-4-4,NoteBook,100,20,mike17@example.com
+2010-4-8,Glue,89,4.8,mike17@example.com
+2010-4-19,Pencil sharpener,140,1.48,user594@example.com
+2010-8-4,Calculator,100,18,user744@example.com
+2010-8-10,Ballpoint,82,2.6,mike17@example.com
+2010-8-10,Ballpoint,26,1.48,mike17@example.com
+2010-6-24,Label,140,0.1,user594@example.com
+2010-6-24,Label,10,20,user744@example.com
+2010-6-28,Label,1000,80,mike17@example.com
+2010-2-2,Pencil,8,0.1,mike17@example.com
+2010-2-4,NoteBook,8,8,user594@example.com
+2010-2-9,Envelope,8,8.8,user744@example.com
+2010-4-8,Pin,8,10,mike17@example.com
+2010-4-18,Basket,26,1.28,mike17@example.com
+2010-4-4,NoteBook,100,20,user594@example.com
+2010-4-8,Glue,89,4.8,user744@example.com
+2010-4-19,Pencil sharpener,140,1.48,mike17@example.com
+2010-8-4,Calculator,100,18,mike17@example.com
+2010-8-10,Ballpoint,82,2.6,user594@example.com
+2010-8-10,Ballpoint,26,1.48,user744@example.com
+2010-8-4,Calculator,100,18,user744@example.com
+2010-8-10,Ballpoint,82,2.6,mike17@example.com
+2010-8-10,Ballpoint,26,1.48,mike17@example.com
+2010-2-9,Envelope,8,8.8,user594@example.com
+2010-4-8,Pin,8,10,user744@example.com
+2010-4-18,Basket,26,1.28,mike17@example.com
+2010-4-4,NoteBook,100,20,mike17@example.com
+2010-4-8,Glue,89,4.8,user594@example.com
+2010-4-19,Pencil sharpener,140,1.48,user744@example.com
+2010-8-4,Calculator,100,18,mike17@example.com
+2010-8-10,Ballpoint,82,2.6,mike17@example.com
+2010-8-10,Ballpoint,26,1.48,user594@example.com
+2010-6-24,Label,140,0.1,user744@example.com
+2010-6-24,Label,10,20,mike17@example.com
+2010-6-28,Label,1000,80,mike17@example.com
