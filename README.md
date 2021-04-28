@@ -1,2 +1,6 @@
-## Link for the "product info input page": http://localhost:8000/product_info_input/
-## Link for the "user creation and editing" pages: http://localhost:8000/create_user/ &http://localhost:8000/edit_user/<pk>/
+## Link for the "product info input page":
+* https://edpatricktan-trial-v2-20210417.herokuapp.com/product_info_input/
+
+## Link for the "user creation and editing" pages:
+* https://edpatricktan-trial-v2-20210417.herokuapp.com/create_user/
+* https://edpatricktan-trial-v2-20210417.herokuapp.com/edit_user/1/
