@@ -1,19 +1,6 @@
-<style type="text/css">
-    .center {
-  margin: auto;
-  width: 50%;
-  border: 3px solid blue;
-  padding: 10px;
-}
-</style>
-<div class="center">
-  {% if messages %}
-  <ul class="messages">
-      {% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|upper }}</li>
-      {% endfor %}
-  </ul>
-  {% endif %}
+{% extends 'base.html' %}
+
+{% block content %}
     <h1>Edit User: {{ user.email }}</h1>
     <form method="POST" action="{% url 'edit_user' user.id %}">
         {% csrf_token %}
@@ -34,4 +21,4 @@
       {% csrf_token %}
       <input type="submit" value="Clear">
     </form>
-</div>
+{% endblock content %}

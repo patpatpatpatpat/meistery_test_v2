@@ -1,0 +1,18 @@
+<style type="text/css">
+    .center {
+  margin: auto;
+  width: 50%;
+  border: 3px solid blue;
+  padding: 10px;
+}
+</style>
+<div class="center">
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|upper }}</li>
+      {% endfor %}
+  </ul>
+  {% endif %}
+  {% block content %}{% endblock content %}
+</div>

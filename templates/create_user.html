@@ -1,16 +1,9 @@
-<style type="text/css">
-    .center {
-  margin: auto;
-  width: 50%;
-  border: 3px solid blue;
-  padding: 10px;
-}
-</style>
-<div class="center">
+{% extends 'base.html' %}
+{% block content %}
     <h1>Create New User</h1>
     <form method="POST" url="{% url 'create_user' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Save">
     </form>
-</div>
+{% endblock content %}
